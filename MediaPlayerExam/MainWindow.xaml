@@ -1,0 +1,171 @@
+﻿<Window x:Class="MediaPlayerExam.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MediaPlayerExam"
+         xmlns:p = "clr-namespace:MediaPlayerExam.Properties"
+        mc:Ignorable="d"
+    Title="Media player" Height="560" Width="800" MinHeight="350" MinWidth="500" Drop="Window_Drop" WindowStartupLocation="CenterScreen" Closed="Window_Closed" Loaded="Window_Loaded">
+    <Window.Resources>
+        <local:VolumeConvertor x:Key="volumeConvertor"></local:VolumeConvertor>
+    </Window.Resources>
+    <Grid AllowDrop="true" x:Name="grid" Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="25"/>
+        </Grid.RowDefinitions>
+        <UniformGrid x:Name="UGridMenu" Grid.Row="0">
+            <Menu x:Name="menuTop" Background="White">
+                <MenuItem Header="{x:Static p:Resources.fileItem}">
+                    <MenuItem Header="{x:Static p:Resources.openFile}" Click="ItemOpenFile_Click"></MenuItem>
+                    <MenuItem Header="{x:Static p:Resources.nedavFile}" Click="ItemNedavFile_Click">
+                        <Label x:Name="nedavFilesLabel" Content="{x:Static p:Resources.labelNedav}"></Label>
+                        <ListView x:Name="listNedavFiles"></ListView>
+                    </MenuItem>
+                    <MenuItem Header="{x:Static p:Resources.currentFile}" Click="ItemListCurrentFile_Click">
+                        <Label x:Name="listCurrentFilesLabel" Content="{x:Static p:Resources.labelCurrent}"></Label>
+                        <ListView x:Name="listCurrentFiles" ItemsSource="{Binding Path=pathMovies}"></ListView>
+                    </MenuItem>
+                </MenuItem>
+                <MenuItem Header="{x:Static p:Resources.vievItem}">
+                    <MenuItem Header="{x:Static p:Resources.changeLanguage}">
+                        <MenuItem Click="EnglishMenuItem_Click" Header="English"></MenuItem>
+                        <MenuItem Click="UkrainianMenuItem_Click" Header="Український"></MenuItem>
+                    </MenuItem>
+                </MenuItem>
+                <MenuItem Header="{x:Static p:Resources.media}">
+                    <MenuItem Click="BolsheSpeed_Click" Header="{x:Static p:Resources.bolsheSec}"></MenuItem>
+                    <MenuItem Click="MensheSpeed_Click" Header="{x:Static p:Resources.mensheSec}"></MenuItem>
+                </MenuItem>
+                <MenuItem Click="ShowInfoItem_Click" Header="{x:Static p:Resources.help}" >
+                </MenuItem>
+            </Menu>
+        </UniformGrid>
+
+        <UniformGrid AllowDrop="True" x:Name="movieUGrid" Columns="1" Rows="1" Grid.Row="1">
+            <Grid AllowDrop="True" x:Name="movidGrid">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Image Grid.Column="1" x:Name="imageUGrid" Source="\ResourcesImage\backgroundMovie.png" Stretch="Fill"></Image>
+                <MediaElement  LoadedBehavior="Manual" AllowDrop="True" x:Name="mediaElement" Stretch="Fill" Grid.Column="0" MediaOpened="mediaElement_MediaOpened" MediaEnded="mediaElement_MediaEnded" MouseDown="mediaElement_MouseDown"/>
+            </Grid>
+
+
+        </UniformGrid>
+
+        <UniformGrid x:Name="UGridDuration" Columns="1" Rows="1" Grid.Row="2">
+            <Border x:Name="borderDuration" Background="White">
+                <Grid Margin="0,0,0,-12">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock x:Name="currentTimeMovieText" Grid.Column="0" Margin="5" FontWeight="Bold" Text="0:0:0"></TextBlock>
+                    <TextBlock x:Name="finishTimeMovieText" Grid.Column="1" HorizontalAlignment="Right" Margin="5" FontWeight="Bold" Text="0:0:0"></TextBlock>
+                </Grid>
+            </Border>
+        </UniformGrid>
+
+        <UniformGrid x:Name="UGridDurationSlider" Columns="1" Rows="1" Grid.Row="3">
+            <Border Background="White">
+                <Slider  x:Name="durationSliderMovie" Grid.Row="0" Grid.Column="0"  MouseLeftButtonUp="durationSliderMovie_MouseLeftButtonUp" ></Slider>
+            </Border>
+        </UniformGrid>
+
+        <UniformGrid x:Name="UGridButtons" Columns="1" Grid.Row="4">
+            <Border Background="White">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="35"/>
+                        <ColumnDefinition Width="35"/>
+                        <ColumnDefinition Width="35"/>
+                        <ColumnDefinition Width="35"/>
+                        <ColumnDefinition Width="35"/>
+                        <ColumnDefinition Width="35"/>
+                        <ColumnDefinition Width="35"/>
+                        <ColumnDefinition Width="35"/>
+                        <ColumnDefinition Width="57*"/>
+                        <ColumnDefinition Width="26*"/>
+                        <ColumnDefinition Width="35"/>
+                        <ColumnDefinition Width="70"/>
+                    </Grid.ColumnDefinitions>
+                    <Button x:Name="startMovieBtn" ToolTip="{x:Static p:Resources.start}"  Margin="3" BorderBrush="Transparent" Grid.Column="0" Click="startMovieBtn_Click">
+                        <Button.Background>
+                            <ImageBrush ImageSource="\ResourcesImage\playq.png"/>
+                        </Button.Background>
+                    </Button>
+                    <Button x:Name="pauseMovieBtn" ToolTip="{x:Static p:Resources.pause}" Margin="3" BorderBrush="Transparent" Grid.Column="1" Click="pauseMovieBtn_Click">
+                        <Button.Background>
+                            <ImageBrush ImageSource="\ResourcesImage\pauseq.png"/>
+                        </Button.Background>
+                    </Button>
+                    <Button x:Name="stopMovieBtn" ToolTip="{x:Static p:Resources.stop}" Margin="4" BorderBrush="Transparent" Grid.Column="2" Click="stopMovieBtn_Click">
+                        <Button.Background>
+                            <ImageBrush ImageSource="\ResourcesImage\stopq.png"/>
+                        </Button.Background>
+                    </Button>
+
+                    <Button x:Name="retryMovieBtn" ToolTip="{x:Static p:Resources._return}"  BorderBrush="Transparent" Grid.Column="3" Click="retryMovieBtn_Click">
+                        <Button.Background>
+                            <ImageBrush ImageSource="\ResourcesImage\returnq.png"/>
+                        </Button.Background>
+                    </Button>
+                    <Button x:Name="back5SecBtn" ToolTip="{x:Static p:Resources.menshe5Sec}" BorderBrush="Transparent" Grid.Column="5" Click="back5SecBtn_Click">
+                        <Button.Background>
+                            <ImageBrush ImageSource="\ResourcesImage\back1.png"/>
+                        </Button.Background>
+                    </Button>
+
+                    <Button x:Name ="backSoundBtn" ToolTip="{x:Static p:Resources.backSound}" Margin="3" BorderBrush="Transparent" Grid.Column="4" Click="backSoundBtn_Click">
+                        <Button.Background>
+                            <ImageBrush ImageSource="\ResourcesImage\back2.png"/>
+                        </Button.Background>
+                    </Button>
+                    <Button  x:Name="nextSoundBtn" ToolTip="{x:Static p:Resources.nextSound}" Margin="3" BorderBrush="Transparent" Grid.Column="7" Click="nextSoundBtn_Click">
+                        <Button.Background>
+                            <ImageBrush ImageSource="\ResourcesImage\next2.png"/>
+                        </Button.Background>
+                    </Button>
+                    <Button x:Name="next5SecBtn" ToolTip="{x:Static p:Resources.bolshe5Sec}" BorderBrush="Transparent" Grid.Column="6" Click="next5SecBtn_Click">
+                        <Button.Background>
+                            <ImageBrush ImageSource="\ResourcesImage\next1.png"/>
+                        </Button.Background>
+                    </Button>
+                    <Border HorizontalAlignment="Left" Background="White" Grid.Column="10"></Border>
+
+                    <Button x:Name="offVoiceBtn" ToolTip="{x:Static p:Resources.offVolume}" HorizontalAlignment="Center" Grid.Column="10" BorderBrush="Transparent" Width="35" Height="30" Click="offVoiceBtn_Click">
+                        <Button.Background>
+                            <ImageBrush ImageSource="\ResourcesImage\volume.png"/>
+                        </Button.Background>
+                    </Button>
+                    <Slider x:Name="sliderVolume" ToolTip="{Binding StringFormat=Volume {0},ElementName=mediaElement, Path=Volume, Converter={StaticResource volumeConvertor}}"  Grid.Column="11" Value="{Binding ElementName=mediaElement, Path=Volume}"  HorizontalAlignment="Center" VerticalAlignment="Center" Width="70" Height="22" ValueChanged="sliderVolume_ValueChanged"></Slider>
+
+
+                </Grid>
+            </Border>
+
+        </UniformGrid>
+
+        <UniformGrid x:Name="UGridOperations" Columns="1" Grid.Row="5">
+            <Border Background="Black">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock  Grid.Column="0" x:Name="operationInfoText" Text="Слава Україні!" Foreground="White" FontSize="12" Padding="5"></TextBlock>
+                    <Label Grid.Column="1" Content="{x:Static p:Resources.VolumeText}" Foreground="White" HorizontalAlignment="Left"></Label>
+                    <TextBlock HorizontalAlignment="Right"  Grid.Column="2" x:Name="volumeInfo" Text="{Binding ElementName=mediaElement,Path=Volume,Converter={StaticResource volumeConvertor}}" Foreground="White" FontSize="12" Padding="5"></TextBlock>
+                </Grid>
+            </Border>
+        </UniformGrid>
+    </Grid>
+</Window>
