@@ -1,5 +1,6 @@
 ﻿using Microsoft.Win32;
 using System;
+using System.Drawing;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -39,7 +40,7 @@ namespace MediaPlayerExam
             }
                 
             InitializeComponent();
-            timer.Interval = new TimeSpan(0, 0, 1);
+            timer.Interval = new TimeSpan(0, 0, 0,0,20);
             timer.Tick += MovieTimer_Tick;
 
         }
@@ -80,16 +81,23 @@ namespace MediaPlayerExam
         }
         private void CheckFormatFile()
         {
-            if (pathMovies[indexMovie].Contains(".mp4"))
+            try
             {
-                imageUGrid.SetValue(Grid.ColumnProperty, 0);
-                mediaElement.SetValue(Grid.ColumnProperty, 1);
+                if (pathMovies[indexMovie].Contains(".mp4"))
+                {
+                    imageUGrid.SetValue(Grid.ColumnProperty, 0);
+                    mediaElement.SetValue(Grid.ColumnProperty, 1);
+                }
+                if (pathMovies[indexMovie].Contains(".mp3"))
+                {
+                    mediaElement.SetValue(Grid.ColumnProperty, 0);
+                    imageUGrid.SetValue(Grid.ColumnProperty, 1);
+                }
             }
-            if (pathMovies[indexMovie].Contains(".mp3"))
+            catch
             {
-                mediaElement.SetValue(Grid.ColumnProperty, 0);
-                imageUGrid.SetValue(Grid.ColumnProperty, 1);
-            }
+
+            } 
         }
     
         #endregion
@@ -150,6 +158,7 @@ namespace MediaPlayerExam
             {
                 indexMovie--;
                 mediaElement.Source = new Uri(pathMovies[indexMovie]);
+                Title = Path.GetFileNameWithoutExtension(Path.GetFileNameWithoutExtension(pathMovies[indexMovie]));
             }
             catch
             {
@@ -157,7 +166,6 @@ namespace MediaPlayerExam
             }
             timer.Stop();
             PlayMovie();
-            Title = Path.GetFileNameWithoutExtension(Path.GetFileNameWithoutExtension(pathMovies[indexMovie]));
             CheckFormatFile();
         }
         public void NextSound()
@@ -166,6 +174,7 @@ namespace MediaPlayerExam
             {
                 indexMovie++;
                 mediaElement.Source = new Uri(pathMovies[indexMovie]);
+                Title = Path.GetFileNameWithoutExtension(Path.GetFileNameWithoutExtension(pathMovies[indexMovie]));
 
             }
             catch
@@ -174,7 +183,6 @@ namespace MediaPlayerExam
             }
             timer.Stop();
             PlayMovie();
-            Title = Path.GetFileNameWithoutExtension(Path.GetFileNameWithoutExtension(pathMovies[indexMovie]));
             CheckFormatFile();
         }
         public void Back5Sec()
@@ -188,6 +196,9 @@ namespace MediaPlayerExam
         }
         public void OffVolume()
         {
+            //help
+       
+
             string pathVolume = @"volume.png";
             string pathVolumeOff = @"volumeOff.png";
             if (offVolume == true)
@@ -541,6 +552,5 @@ namespace MediaPlayerExam
 
         }
         #endregion
-
     }
 }

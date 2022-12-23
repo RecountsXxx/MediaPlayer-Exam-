@@ -1,39 +1,32 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:MediaPlayerExam">
+
+    <Style x:Key="buttonStyle" TargetType="Button">
+        <Setter Property="BorderBrush" Value="Transparent"></Setter>
+    </Style>
+    
     <ControlTemplate x:Key="templateButton" TargetType="Button">
-        <Border x:Name="buttonBorder">
-            <Border.Background>
-                <ImageBrush ImageSource="\ResourcesImage\playq.png"></ImageBrush>
-            </Border.Background>
-        </Border>
+       
+        <ControlTemplate.Resources>
+           <local:Convertor x:Key="convertorImage"></local:Convertor>
+        </ControlTemplate.Resources>
+
+        <Border BorderThickness="2" Name="buttonBorder" Background="{TemplateBinding Background, Converter={StaticResource convertorImage}}"/>
 
         <ControlTemplate.Triggers>
             <Trigger Property="IsMouseOver" Value="true">
-                <Setter Property="FontWeight" Value="Bold" />
+                <Setter TargetName="buttonBorder" Property="BorderThickness" Value="0"></Setter>
             </Trigger>
-            <Trigger Property="IsPressed" Value="true">
-                <Setter TargetName="buttonBorder" Property="Background" Value="{Binding Path=Background.Image}" />
-                <Setter TargetName="buttonBorder" Property="BorderBrush" Value="DarkBlue" />
-            </Trigger>
-            <Trigger Property="IsEnabled" Value="false">
-                <Setter Property="Foreground" Value="Gray"/>
-                <Setter TargetName="buttonBorder" Property="Background" Value="{Binding ElementName=buttonBorder, Path=Background}" />
-            </Trigger>
-
-
-            <!--<EventTrigger RoutedEvent="Button.Click">
+            <EventTrigger RoutedEvent="Button.Click">
                 <EventTrigger.Actions>
                     <BeginStoryboard>
                         <Storyboard>
-                            <ColorAnimation Storyboard.TargetName="buttonBorder" Storyboard.TargetProperty="Background.Color"
-                              From="{x:Null}" To="Aquamarine"
-                              AutoReverse="True" Duration="0:0:1" />
+                            <ThicknessAnimation Storyboard.TargetName="buttonBorder" Storyboard.TargetProperty="BorderThickness" From="2" To="0" Duration="0:0:0.2" AutoReverse="True"/>
                         </Storyboard>
                     </BeginStoryboard>
                 </EventTrigger.Actions>
-            </EventTrigger>-->
-
+            </EventTrigger>
         </ControlTemplate.Triggers>
-
     </ControlTemplate>
 </ResourceDictionary>

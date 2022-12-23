@@ -37,9 +37,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>metro_windowsmediaplayeralt_11355.ico</ApplicationIcon>
+    <ApplicationIcon>ResourcesImage\metro_windowsmediaplayeralt_11355.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Hardcodet.Wpf.TaskbarNotification, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Hardcodet.NotifyIcon.Wpf.1.0.5\lib\net451\Hardcodet.Wpf.TaskbarNotification.dll</HintPath>
+    </Reference>
     <Reference Include="Mpv.NET, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Mpv.NET.1.2.0\lib\netstandard2.0\Mpv.NET.dll</HintPath>
     </Reference>
@@ -74,6 +77,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Convertors\Convertor.cs" />
     <Compile Include="Properties\Resources.En.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -84,7 +88,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.Ua.resx</DependentUpon>
     </Compile>
-    <Compile Include="VolumeConvertor.cs" />
+    <Compile Include="Convertors\VolumeConvertor.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -165,7 +169,7 @@
     <Resource Include="ResourcesImage\volumeOff.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="metro_windowsmediaplayeralt_11355.ico" />
+    <Resource Include="ResourcesImage\metro_windowsmediaplayeralt_11355.ico" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
